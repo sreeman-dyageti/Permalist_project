@@ -9,5 +9,11 @@
   "keywords": [],
   "author": "sreeman_d",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "pg": "^8.18.0"
+  }
 }
