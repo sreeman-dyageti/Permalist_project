@@ -40,14 +40,13 @@
     checkbox.addEventListener('change', function(e) {
       if (this.checked) {
         const itemText = this.closest('.list-group-item').querySelector('[id^="title-"]').textContent;
-        if (confirm(`Are you sure you want to delete "${itemText.trim()}"?`)) {
           this.form.submit();
-        } else {
+       } else {
           this.checked = false; // Uncheck if user cancels
           e.preventDefault();
         }
       }
-    });
+    );
   });
 
   // Add animation when new items are added (if they appear)

@@ -1,45 +1,74 @@
 <%- include('partials/header.ejs'); -%>
 
-  <div class="box" id="heading">
-    <h1>
-      <%= listTitle %>
-    </h1>
+<div class="container py-4">
+  <!-- Header Card -->
+  <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+  <div class="card shadow-sm mb-4">
+  <div class="card-header bg-primary text-white py-3">
+<h1 class="h3 mb-0 text-center">
+ <i class="bi bi-list-check me-2"></i><%= listTitle %>
+  </h1>
+</div>
+        
+<!-- Items List -->
+ <ul class="list-group list-group-flush" id="todo-list">
+ <% for(let item of listItems) { %>
+<li class="list-group-item d-flex align-items-center gap-2 py-3" id="item-<%= item.id %>">
+  <!-- Delete Form -->
+ <form action="/delete" method="post" class="delete-form m-0">
+  <input type="checkbox" 
+ class="form-check-input cursor-pointer" 
+    onchange="this.form.submit()" 
+    name="deleteItemId" 
+    value="<%= item.id %>"
+    id="check-<%= item.id %>">
+</form>
+
+  <!-- Item Title (View Mode) -->
+  <span class="flex-grow-1 ms-2" id="title-<%= item.id %>">
+    <%= item.title %>
+  </span>
+
+<!-- Edit Form (Edit Mode) -->
+<form action="/edit" method="post" class="edit-form d-flex align-items-center gap-2 flex-grow-1" id="edit-form-<%= item.id %>" style="display: none !important;">
+  <input type="hidden" name="updatedItemId" value="<%= item.id %>">
+  <input type="text" 
+          class="form-control form-control-sm" 
+          name="updatedItemTitle" 
+          value="<%= item.title %>" 
+          id="input-<%= item.id %>"
+          autocomplete="off">
+  <button type="submit" class="btn btn-success btn-sm">
+    <i class="bi bi-check-lg"></i>
+  </button>
+</form>
+
+<!-- Edit Button (View Mode) -->
+<button class="btn btn-outline-secondary btn-sm ms-2" onclick="editItem('<%= item.id %>')" id="edit-btn-<%= item.id %>">
+  <i class="bi bi-pencil"></i>
+</button>
+</li>
+<% } %>
+</ul>
+
+<!-- Add New Item Form -->
+<div class="card-footer bg-white p-3">
+<form action="/add" method="post" class="d-flex gap-2">
+<input type="text" 
+  class="form-control" 
+  name="newItem" 
+  placeholder="Add a new item..." 
+  autocomplete="off"
+  required>
+<input type="hidden" name="list" value="<%= listTitle %>">
+<button class="btn btn-primary" type="submit">
+     <i class="bi bi-plus-lg"></i>
+  </button>
+       </form>
   </div>
-  <div class="box">
-    <% for(let item of listItems){%>
-      <div class="item">
-        <form action="/delete" method="post">
-          <input type="checkbox" onchange="this.form.submit()" name="deleteItemId" value="<%= item.id %>">
-        </form>
-
-        <p id="title<%=item.id%>">
-          <%= item.title %>
-        </p>
-
-        <form class="edit" action="/edit" method="post">
-          <input type="hidden" name="updatedItemId" value="<%= item.id %>">
-          <input id="input<%=item.id%>" type="text" name="updatedItemTitle" value="<%= item.title %>" autocomplete="off"
-            autofocus="true" hidden="true" />
-          <button id="done<%=item.id%>" class="edit" type="submit" hidden><img class="icon"
-              src="/assets/icons/check-solid.svg" alt="tick image"></button>
-        </form>
-        <button id="edit<%=item.id%>" class="edit" onclick="handler('<%=item.id%>')"><img class="icon"
-            src="/assets/icons/pencil-solid.svg" alt="pencil image"></button>
-      </div>
-      <% } %>
-
-        <form class="item" action="/add" method="post">
-          <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" />
-          <button class="add" type="submit" name="list" value=<%=listTitle %> >+</button>
-        </form>
+    </div>
+    </div>
   </div>
-
-  <script>
-    function handler(id) {
-      document.getElementById("title" + id).setAttribute("hidden", true)
-      document.getElementById("edit" + id).setAttribute("hidden", true)
-      document.getElementById("done" + id).removeAttribute("hidden")
-      document.getElementById("input" + id).removeAttribute("hidden")
-    }
-  </script>
+</div>
   <%- include('partials/footer.ejs'); -%>
